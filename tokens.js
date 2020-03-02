@@ -1,0 +1,71 @@
+const tokens = [
+{
+	"symbol":"HBC",//symbol of token
+	"mode":"long",//long or short book
+},
+{
+	"symbol":"HBC",
+	"mode":"short",
+},
+{
+	"symbol":"ENG",
+	"mode":"long",
+},
+{
+	"symbol":"ENG",
+	"mode":"short",
+},
+{
+	"symbol":"DEC",
+	"mode":"long",
+},
+{
+	"symbol":"DEC",
+	"mode":"short",
+},
+{
+	"symbol":"WEED",
+	"mode":"long",
+},
+{
+	"symbol":"WEED",
+	"mode":"short",
+},
+{
+	"symbol":"PAL",
+	"mode":"short",
+},
+{
+	"symbol":"LEO",
+	"mode":"long",
+},
+{
+	"symbol":"LEO",
+	"mode":"short",
+},
+{
+	"symbol":"PHOTO",
+	"mode":"short",
+},
+{
+	"symbol":"LIFESTYLE",
+	"mode":"short",
+},
+{
+	"symbol":"STARDUST",
+	"mode":"short",
+},
+{
+	"symbol":"STARDUST",
+	"mode":"long",
+},
+{
+	"symbol":"SIM",
+	"mode":"long",
+},
+{
+	"symbol":"SIM",
+	"mode":"short",
+}
+]
+module.exports = tokens
