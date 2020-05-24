@@ -1,6 +1,8 @@
 module.exports = {broadcast, addqueue}
 
-let steem = require("steem")
+//let steem = require("steem")
+const steem = require("steem-js-patched")
+steem.api.setOptions({ url: 'https://api.hive.blog'});
 
 let config = require("./config.js")
 let queue = []
@@ -18,7 +20,7 @@ function broadcast(){
   {
     "required_auths": [config.account],
     "required_posting_auths": [],
-    "id": "ssc-mainnet1",
+    "id": "ssc-mainnet-hive",//ssc-mainnet-hive  ssc-mainnet1
     "json": JSON.stringify(queue.splice(0, config.ops))
   }
  ]
