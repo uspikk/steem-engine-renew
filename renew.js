@@ -1,6 +1,8 @@
 module.exports = {renewlong, renewshort}
 
-let request = require("graphql-request").request
+const SSC = require('sscjs');
+const ssc = new SSC('https://api.steem-engine.com/rpc2');
+//const ssc = new SSC('https://api.hive-engine.com/rpc/');
 
 let config = require("./config.js")
 let broadcast = require("./broadcast.js").addqueue
@@ -8,7 +10,24 @@ let broadcast = require("./broadcast.js").addqueue
 
 function renewlong(token, offset, book){
  let query = `{sellBook(symbol:"${token}", limit:1000, offset:${offset}){txId, quantity, price, expiration, account}}`
-   request('https://graphql.steem.services/', query).then(data =>{
+ ssc.find('market','sellBook',{symbol:dinfo.symbol},1000, 0, [], (err, result)=>{
+   if(result){
+     if(result.length > 0){
+      offset = offset + 1000
+      for(var i=0;i<result.length;i++){
+       book.push(result[i])
+      }
+      renewlong(token, offset, book)
+      return;
+     }
+     else{
+      book = book.sort(function(a,b){return a.price - b.price});
+      sortlong(token, book);
+      return;
+     }
+   }
+ })
+/*   request('https://graphql.steem.services/', query).then(data =>{
    if(data.sellBook.length > 0){
    	offset = offset + 1000
    	for(var i=0;i<data.sellBook.length;i++){
@@ -22,7 +41,7 @@ function renewlong(token, offset, book){
     sortlong(token, book);
     return;
    }
-  })
+  })*/
 }
 
 async function sortlong(token, book){
@@ -57,7 +76,24 @@ async function sortlong(token, book){
 
 function renewshort(token, offset, book){
  let query = `{buyBook(symbol:"${token}", limit:1000, offset:${offset}){txId, quantity, price, expiration, account}}`
-  request('https://graphql.steem.services/', query).then(data =>{
+ ssc.find('market','buyBook',{symbol:token},1000, offset, [], (err, result)=>{
+   if(result){
+      if(result.length > 0){
+      offset = offset + 1000
+      for(var i=0;i<result.length;i++){
+       book.push(result[i])
+      }
+      renewshort(token, offset, book)
+      return;
+     }
+     else{
+      book = book.sort(function(a,b){return b.price - a.price});
+      sortshort(token, book);
+      return;
+     }
+   }
+ })
+/*  request('https://graphql.steem.services/', query).then(data =>{
    if(data.buyBook.length > 0){
    	offset = offset + 1000
    	for(var i=0;i<data.buyBook.length;i++){
@@ -71,7 +107,7 @@ function renewshort(token, offset, book){
     sortshort(token, book);
     return;
    }
-  })
+  })*/
 }
 
 async function sortshort(token, book){
